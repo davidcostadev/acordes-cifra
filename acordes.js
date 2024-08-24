@@ -251,7 +251,7 @@ class BibliotecaAcorde {
     bibliotecaAcordesMenoresComSetima = [
         { n: 'Cm7', m: 'X 3 5 3 4 3', d: '013121', p: true},
         { n: 'C#m7', m: 'X 4 6 4 5 4', d: '013121', p: true},
-        { n: 'Dm7', m: 'X X 0 2 1 1', d: '000213', p: true},
+        { n: 'Dm7', m: 'X X 0 2 1 1', d: '000312', p: true},
         { n: 'D#m7', m: 'X 6 8 6 7 6', d: '013121', p: true},
         { n: 'Em7', m: '0 2 2 0 3 0', d: '012030', p: null},
         { n: 'Fm7', m: '1 3 1 1 1 1', d: '131111', p: true},
