@@ -248,12 +248,28 @@ class BibliotecaAcorde {
         { n: 'B7', m: 'X 2 4 2 4 2', d: '012131', p: true},    
     ];
 
+    bibliotecaAcordesMenoresComSetima = [
+        { n: 'Cm7', m: 'X 3 5 3 4 3', d: '013121', p: true},
+        { n: 'C#m7', m: 'X 4 6 4 5 4', d: '013121', p: true},
+        { n: 'Dm7', m: 'X X 0 2 1 1', d: '000213', p: true},
+        { n: 'D#m7', m: 'X 6 8 6 7 6', d: '013121', p: true},
+        { n: 'Em7', m: '0 2 2 0 3 0', d: '012030', p: null},
+        { n: 'Fm7', m: '1 3 1 1 1 1', d: '131111', p: true},
+        { n: 'F#m7', m: '2 4 2 2 2 2', d: '131111', p: true},
+        { n: 'Gm7', m: '3 5 3 3 3 3', d: '131111', p: true},
+        { n: 'G#m7', m: '4 6 4 4 4 4', d: '131111', p: true},
+        { n: 'Am7', m: 'X 0 2 0 1 0', d: '0020100', p: null},
+        { n: 'A#m7', m: 'X 1 3 1 2 1', d: '013121', p: true},
+        { n: 'Bm7', m: 'X 2 4 2 3 2', d: '013121', p: true},    
+    ];
+
     getTodosAcordes(){
         let bibliotecaAcordesFinal = [];
         bibliotecaAcordesFinal = bibliotecaAcordesFinal.concat(this.bibliotecaAcordesBasicos);
         bibliotecaAcordesFinal = bibliotecaAcordesFinal.concat(this.bibliotecaAcordesBasicos2);
         bibliotecaAcordesFinal = bibliotecaAcordesFinal.concat(this.bibliotecaAcordesMenores);
         bibliotecaAcordesFinal = bibliotecaAcordesFinal.concat(this.bibliotecaAcordesSetima);
+        bibliotecaAcordesFinal = bibliotecaAcordesFinal.concat(this.bibliotecaAcordesMenoresComSetima);
         bibliotecaAcordesFinal = bibliotecaAcordesFinal.concat(this.bibliotecaAcordesCustomizado);
         return bibliotecaAcordesFinal;
     }
@@ -324,6 +340,13 @@ biblioteca.bibliotecaAcordesMenores.forEach(acorde => {
 this.criarTitulo('Acordes 7ª');
 
 biblioteca.bibliotecaAcordesSetima.forEach(acorde => {
+    let novoAcorde = new Acorde(acorde.n, acorde.m, acorde.d,acorde.p);
+    document.getElementById('acordes').appendChild(novoAcorde.montaAcorde());
+});
+
+this.criarTitulo('Acordes Menores com 7ª');
+
+biblioteca.bibliotecaAcordesMenoresComSetima.forEach(acorde => {
     let novoAcorde = new Acorde(acorde.n, acorde.m, acorde.d,acorde.p);
     document.getElementById('acordes').appendChild(novoAcorde.montaAcorde());
 });
