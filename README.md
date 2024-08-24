@@ -36,7 +36,7 @@ Sendo que a biblioteca é gerada por esta notação de texto **"X 3 2 0 1 0"** c
 * Biblioteca de acordes básicos
 * Leitura de cifra para apresentar acorde
 * Transposição de acorde
-* Divisão em musica cifrada em colunas
+* Divisão em colunas da música
 
 ## TODO
 
