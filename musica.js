@@ -1,5 +1,14 @@
 var tomAtual = 0;
+var numColunas = 1;
 var ultimaMusica;
+var locallizacaoTagCifra = "#resultado > pre > b";
+
+function* pedacos(arr, n) {
+    for (let i = 0; i < arr.length; i += n) {
+      yield arr.slice(i, i + n);
+    }
+}
+
 function transformar(textoMusica) {
     // (?:[A-G](?:b|bb)*(?:#|##|sus|maj|min|aug|m|M|\\+|-|dim)*[\d\/]*)*)(?=\s|$)(?! \w))
 
@@ -24,33 +33,76 @@ function transformar(textoMusica) {
     biblioteca.setAcordesCustomizados(novosAcordes);    
 
     let separadoPorLinhas = textoMusica.split('\n');
+    
+    // TODO fazer separação por colunas    
+    let tamanhoTotal = separadoPorLinhas.length;
+    let tamanhoParte = Math.ceil(tamanhoTotal / numColunas);
+    let colunas = [...pedacos(separadoPorLinhas, tamanhoParte)];
 
     alterado = [];
     const campo = document.getElementById('resultado');
     campo.innerHTML = "";
-    separadoPorLinhas.forEach(linha => {
-        if(linha.match(regex)){
-            alterado.push(linha.replace(regex,"<b>$1</b>"));
-        }else{
-            alterado.push(linha);
-        }
+    
+    if(numColunas == 1){
+        // Se apenas uma coluna
+        locallizacaoTagCifra = "#resultado > pre > b";
+        separadoPorLinhas.forEach(linha => {
+            if(linha.match(regex)){
+                alterado.push(linha.replace(regex,"<b>$1</b>"));
+            }else{
+                alterado.push(linha);
+            }
+            
+        });
+        //monta titulo
+        let h2 = document.createElement('h2');
+        h2.innerHTML = alterado[0];
+        campo.appendChild(h2);
+        alterado.shift();
+        //monta canção
+        let pre = document.createElement('pre');
+        pre.innerHTML = alterado.join('\n');
+        campo.appendChild(pre);
+    } else {
+        // Se duas ou mais colunas    
+        locallizacaoTagCifra = "#resultado > .row > .col > pre > b";
+        let row = document.createElement('div');
+        colunas.forEach((parteMusica,iPt) => {
+            alterado = [];
+            parteMusica.forEach(linha => {
+                if(linha.match(regex)){
+                    alterado.push(linha.replace(regex,"<b>$1</b>"));
+                }else{
+                    alterado.push(linha);
+                }
+                
+            });
+            if(iPt == 0){
+                //monta titulo
+                let h2 = document.createElement('h2');
+                h2.innerHTML = alterado[0];
+                campo.appendChild(h2);
+                alterado.shift();
+            }            
+            //monta canção
+            let pre = document.createElement('pre');
+            pre.innerHTML = alterado.join('\n');
+            let col = document.createElement('div');
+            col.classList.add("col");
+            row.appendChild(col);
+            col.appendChild(pre);
+        });        
+        row.classList.add("row");
+        campo.appendChild(row);
         
-    });
-    //monta titulo
-    let h2 = document.createElement('h2');
-    h2.innerHTML = alterado[0];
-    campo.appendChild(h2);
-    alterado.shift();
-    //monta canção
-    let pre = document.createElement('pre');
-    pre.innerHTML = alterado.join('\n');
-    campo.appendChild(pre);
+    }
+
     function removerDaTela(element) {
         if(element.target.querySelector('div')){
             element.target.querySelector('div').remove();
         }
     }
-    document.querySelectorAll('#resultado > pre > b').forEach(element => {
+    document.querySelectorAll(locallizacaoTagCifra).forEach(element => {
         element.addEventListener("mouseenter", function(element) {            
             if(!element.target.querySelector('div')){                
                 let campoAcorde = document.createElement('div');
@@ -79,7 +131,7 @@ function transformar(textoMusica) {
 function transposicao(event) { // enviar 1 ou -1
     let meioTom = (tomAtual < parseInt(event.target.value)) ? 1 : -1;
     tomAtual = parseInt(event.target.value);    
-    document.querySelectorAll('#resultado > pre > b').forEach(element => {
+    document.querySelectorAll(locallizacaoTagCifra).forEach(element => {
         // console.log(element.innerText);
         let acorde = element.innerText;
         let baixo = element.innerText.split('/');        
@@ -126,9 +178,14 @@ function reset() {
     carregaArquivo(ultimaMusica);
 }
 
+function divisaoColuna(num) {
+    numColunas = num; 
+    carregaArquivo(ultimaMusica);
+}
+
 function transposicaoBotao(meioTom) { // enviar 1 ou -1    
     tomAtual = tomAtual + meioTom;    
-    document.querySelectorAll('#resultado > pre > b').forEach(element => {
+    document.querySelectorAll(locallizacaoTagCifra).forEach(element => {
         // console.log(element.innerText);
         let acorde = element.innerText;
         let baixo = element.innerText.split('/');        

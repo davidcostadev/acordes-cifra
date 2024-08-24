@@ -26,17 +26,17 @@
             flex: 1;
             flex-direction: column;
         }
-        #resultado > pre{
+        #resultado > pre, #resultado > .row > .col > pre{
             font-family: "Lucida Console", Cousine, Monaco,monospace;
             line-height: 1.5;
-            margin: 1em 0px;
+            margin: 1em 0px;            
         }
-        #resultado > pre > b {
+        #resultado > pre > b, #resultado > .row > .col > pre > b {
             color: #2e7ca9;
             cursor: pointer;
             font-weight: 700;
         }
-        #resultado > pre > b:hover {
+        #resultado > pre > b:hover, #resultado > .row > .col > pre > b:hover {
             color: #FFFFFF;
             background-color: #2e7ca9;
             padding: 0 4px;
@@ -66,6 +66,9 @@
     <button onclick="transposicaoBotao(1)">+ 1/2 tom</button>
     <button onclick="transposicaoBotao(-1)">- 1/2 tom</button>
     <Button onclick="reset()">reset</Button>
+    <Button onclick="divisaoColuna(1)">&vellip;</Button>
+    <Button onclick="divisaoColuna(2)">&vellip;&vellip;</Button>
+    <Button onclick="divisaoColuna(3)">&vellip;&vellip;&vellip;</Button>
     <div class="row">
         <div class="col musicas">
             <p data-arquivo="Nívea Soares - Teu Amor Não Falha" onclick="abrirMusica(event)">Nívea Soares - Teu Amor Não Falha</p>
