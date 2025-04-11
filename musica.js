@@ -20,8 +20,8 @@ function transformar(textoMusica) {
     foraMusica = "(?=\\s|$)(?! \\w)",
     padrao = "("+"\\b(" + notas + acentuacoes + numeros + acordes + com + '(?:' + notas + acentuacoes + acordes + com + ')*)'+foraMusica+")",
     regex = new RegExp(padrao, "g");
-
-    let acordesTexto = textoMusica.split('[Acordes]')[1];
+    let a = textoMusica.split('[Acordes]')
+    let acordesTexto = a[1];
     let novosAcordesSeparados = acordesTexto.split('\n')
     let novosAcordes = [];
     novosAcordesSeparados.forEach(linha => {
