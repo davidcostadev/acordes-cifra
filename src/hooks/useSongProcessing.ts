@@ -18,14 +18,50 @@ interface UseSongProcessingResult {
   title: string;
   processedContent: ProcessedLine[];
   customChords: CustomChord[];
+  originalKey: string;
   isLoading: boolean;
   error: string | null;
 }
+
+const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+const detectKey = (lines: ProcessedLine[]): string => {
+  const chordCounts: { [key: string]: number } = {};
+
+  // Count occurrences of each root note
+  lines.forEach((line) => {
+    line.parts.forEach((part) => {
+      if (part.type === 'chord') {
+        const match = part.content.match(/^([A-G][#b]?)/);
+        if (match) {
+          const rootNote = match[1];
+          // Normalize flats to sharps
+          const normalizedRoot = rootNote.replace('b', '#');
+          chordCounts[normalizedRoot] = (chordCounts[normalizedRoot] || 0) + 1;
+        }
+      }
+    });
+  });
+
+  // Find the most common root note
+  let maxCount = 0;
+  let detectedKey = 'C'; // Default to C if no chords found
+
+  Object.entries(chordCounts).forEach(([note, count]) => {
+    if (count > maxCount) {
+      maxCount = count;
+      detectedKey = note;
+    }
+  });
+
+  return detectedKey;
+};
 
 export const useSongProcessing = (fileName: string | null): UseSongProcessingResult => {
   const [title, setTitle] = useState<string>('');
   const [processedContent, setProcessedContent] = useState<ProcessedLine[]>([]);
   const [customChords, setCustomChords] = useState<CustomChord[]>([]);
+  const [originalKey, setOriginalKey] = useState<string>('C');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -130,6 +166,10 @@ export const useSongProcessing = (fileName: string | null): UseSongProcessingRes
         setTitle(lines[0]);
         const processed = lines.slice(1).map((line) => processLine(line));
         setProcessedContent(processed);
+
+        // Detect and set the original key
+        const detectedKey = detectKey(processed);
+        setOriginalKey(detectedKey);
       } catch (error) {
         setError(error instanceof Error ? error.message : 'An error occurred');
       } finally {
@@ -145,10 +185,11 @@ export const useSongProcessing = (fileName: string | null): UseSongProcessingRes
       title,
       processedContent,
       customChords,
+      originalKey,
       isLoading,
       error,
     }),
-    [title, processedContent, customChords, isLoading, error]
+    [title, processedContent, customChords, originalKey, isLoading, error]
   );
 
   return result;

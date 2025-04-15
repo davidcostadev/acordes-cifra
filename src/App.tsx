@@ -3,6 +3,7 @@ import { ChordDisplay } from './components/ChordDisplay';
 import { SongList } from './components/SongList';
 import { SongResult } from './components/SongResult';
 import { SongContent } from './components/SongContent';
+import { KeyDisplay } from './components/KeyDisplay';
 
 const SONGS = [
   { title: 'Nívea Soares - Teu Amor Não Falha', fileName: 'Nívea Soares - Teu Amor Não Falha' },
@@ -45,17 +46,37 @@ const SONGS = [
 
 const EXAMPLE_CHORDS = ['C', 'Am', 'F', 'G', 'Dm', 'Em', 'C7', 'Fmaj7'];
 
+const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+const getTransposedKey = (originalKey: string, semitones: number): string => {
+  const normalizedKey = originalKey.replace('b', '#');
+  const currentIndex = NOTES.indexOf(normalizedKey);
+  if (currentIndex === -1) return originalKey;
+
+  let newIndex = (currentIndex + semitones + 12) % 12;
+  if (newIndex < 0) newIndex += 12;
+
+  return NOTES[newIndex];
+};
+
 function App() {
   const [selectedSong, setSelectedSong] = useState<string | null>(
     'Nívea Soares - Teu Amor Não Falha'
   );
-  console.log(selectedSong);
   const [transpose, setTranspose] = useState(0);
   const [columns, setColumns] = useState(1);
   const [selectedChord, setSelectedChord] = useState('C');
 
   const handleSongSelect = (fileName: string) => {
     setSelectedSong(fileName);
+  };
+
+  const handleTransposeChange = (amount: number) => {
+    setTranspose((prev) => {
+      const newValue = prev + amount;
+      // Limit transpose range to -11 to +11 semitones
+      return Math.min(Math.max(newValue, -11), 11);
+    });
   };
 
   return (
@@ -69,15 +90,24 @@ function App() {
             {selectedSong && (
               <div className="flex flex-col gap-4">
                 <div className="flex gap-4 items-center">
-                  <label className="flex items-center gap-2">
-                    <span>Transpose:</span>
-                    <input
-                      type="number"
-                      value={transpose}
-                      onChange={(e) => setTranspose(Number(e.target.value))}
-                      className="border rounded px-2 py-1 w-20"
-                    />
-                  </label>
+                  <div className="flex items-center gap-2">
+                    <span>Tom:</span>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => handleTransposeChange(-1)}
+                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                      >
+                        -
+                      </button>
+                      <KeyDisplay fileName={selectedSong} transpose={transpose} />
+                      <button
+                        onClick={() => handleTransposeChange(1)}
+                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
                   <label className="flex items-center gap-2">
                     <span>Columns:</span>
                     <input

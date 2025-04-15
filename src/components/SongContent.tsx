@@ -7,6 +7,7 @@ interface SongContentProps {
   fileName: string;
   transpose: number;
   columns: number;
+  renderKey?: (originalKey: string) => React.ReactNode;
 }
 
 interface ChordPosition {
@@ -29,6 +30,37 @@ interface ProcessedLine {
   }[];
 }
 
+const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+const transposeChord = (chord: string, semitones: number): string => {
+  // Handle empty chords
+  if (!chord) return chord;
+
+  // Find the root note and any modifiers
+  const match = chord.match(/^([A-G][#b]?)(.*)$/);
+  if (!match) return chord;
+
+  const [, rootNote, modifiers] = match;
+
+  // Convert flats to sharps for consistency
+  let normalizedRoot = rootNote.replace('b', '#');
+  if (rootNote.includes('b')) {
+    const index = NOTES.indexOf(NOTES[(NOTES.indexOf(rootNote[0]) + 11) % 12]);
+    normalizedRoot = NOTES[index];
+  }
+
+  // Find the index of the root note
+  const noteIndex = NOTES.indexOf(normalizedRoot);
+  if (noteIndex === -1) return chord;
+
+  // Calculate the new note index
+  let newIndex = (noteIndex + semitones + 12) % 12;
+  if (newIndex < 0) newIndex += 12;
+
+  // Return the new chord
+  return NOTES[newIndex] + modifiers;
+};
+
 const Chord: React.FC<{
   content: string;
   onChordClick: (event: React.MouseEvent<HTMLSpanElement>) => void;
@@ -50,11 +82,15 @@ const Chord: React.FC<{
   );
 };
 
-export const SongContent = ({ fileName, transpose, columns }: SongContentProps) => {
+export const SongContent = ({ fileName, transpose, columns, renderKey }: SongContentProps) => {
   const [hoveredChord, setHoveredChord] = useState<ChordPosition | null>(null);
   const [selectedChord, setSelectedChord] = useState<ChordPosition | null>(null);
 
-  const { title, processedContent, isLoading, error } = useSongProcessing(fileName);
+  const { title, processedContent, originalKey, isLoading, error } = useSongProcessing(fileName);
+
+  if (renderKey) {
+    return renderKey(originalKey);
+  }
 
   const handleChordClick = useCallback(
     (event: React.MouseEvent<HTMLSpanElement>) => {
@@ -78,7 +114,7 @@ export const SongContent = ({ fileName, transpose, columns }: SongContentProps) 
   );
 
   const handleChordMouseEnter = (event: React.MouseEvent<HTMLSpanElement>) => {
-    if (selectedChord) return; // Don't show hover when a chord is selected
+    if (selectedChord) return;
     const target = event.currentTarget;
     const rect = target.getBoundingClientRect();
     setHoveredChord({
@@ -89,31 +125,30 @@ export const SongContent = ({ fileName, transpose, columns }: SongContentProps) 
   };
 
   const handleChordMouseLeave = () => {
-    if (selectedChord) return; // Don't hide if a chord is selected
+    if (selectedChord) return;
     setHoveredChord(null);
   };
 
   const renderLine = useMemo(() => {
-    console.log('Memoizing renderLine');
     return (line: ProcessedLine) => {
-      console.log(line);
       return line.parts.map((part, index) => {
         if (part.type === 'chord') {
+          const transposedChord = transposeChord(part.content.trim(), transpose);
           return (
             <Chord
               key={index}
-              content={part.content}
+              content={transposedChord}
               onChordClick={handleChordClick}
               onChordMouseEnter={handleChordMouseEnter}
               onChordMouseLeave={handleChordMouseLeave}
-              isSelected={selectedChord?.name === part.content}
+              isSelected={selectedChord?.name === transposedChord}
             />
           );
         }
         return <span key={index}>{part.content}</span>;
       });
     };
-  }, [handleChordClick, selectedChord?.name]);
+  }, [handleChordClick, selectedChord?.name, transpose]);
 
   if (isLoading) {
     return <div>Loading...</div>;
