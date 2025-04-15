@@ -129,27 +129,6 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
     setHoveredChord(null);
   };
 
-  const renderLine = useMemo(() => {
-    return (line: ProcessedLine) => {
-      return line.parts.map((part, index) => {
-        if (part.type === 'chord') {
-          const transposedChord = transposeChord(part.content.trim(), transpose);
-          return (
-            <Chord
-              key={index}
-              content={transposedChord}
-              onChordClick={handleChordClick}
-              onChordMouseEnter={handleChordMouseEnter}
-              onChordMouseLeave={handleChordMouseLeave}
-              isSelected={selectedChord?.name === transposedChord}
-            />
-          );
-        }
-        return <span key={index}>{part.content}</span>;
-      });
-    };
-  }, [handleChordClick, selectedChord?.name, transpose]);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -158,78 +137,61 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
     return <div>Error: {error}</div>;
   }
 
-  if (columns === 1) {
-    return (
-      <div className="whitespace-pre-wrap font-mono relative">
-        <h2>{title}</h2>
-        <div className="song-content">
-          {processedContent.map((line, index) => (
-            <p key={index} className="my-0 relative">
-              {renderLine(line)}
-            </p>
-          ))}
-        </div>
-        {(hoveredChord || selectedChord) && (
-          <div
-            className="fixed"
-            style={{
-              top: (selectedChord || hoveredChord)!.top + 60,
-              left: Math.max(10, (selectedChord || hoveredChord)!.left - 100),
-              width: '300px',
-              height: '200px',
-              zIndex: 100,
-            }}
-            onClick={() => setSelectedChord(null)}
-          >
-            <KeyboardChordVisualizer
-              chordName={(selectedChord || hoveredChord)!.name}
-              position={{ top: 0, left: 0 }}
-            />
-          </div>
-        )}
-      </div>
-    );
-  } else {
-    const partSize = Math.ceil(processedContent.length / columns);
-    const columnContents: ProcessedLine[][] = [];
+  // Split content into columns vertically
+  const totalLines = processedContent.length;
+  const linesPerColumn = Math.ceil(totalLines / columns);
+  const columnContents: ProcessedLine[][] = Array.from({ length: columns }, (_, columnIndex) => {
+    const startIndex = columnIndex * linesPerColumn;
+    return processedContent.slice(startIndex, startIndex + linesPerColumn);
+  });
 
-    for (let i = 0; i < processedContent.length; i += partSize) {
-      columnContents.push(processedContent.slice(i, i + partSize));
-    }
-
-    return (
-      <div className="whitespace-pre-wrap font-mono relative">
-        <h2>{title}</h2>
-        <div className="row">
-          {columnContents.map((column, colIndex) => (
-            <div key={colIndex} className="col">
-              {column.map((line, lineIndex) => (
-                <p key={lineIndex} className="my-0 relative">
-                  {renderLine(line)}
-                </p>
-              ))}
-            </div>
-          ))}
-        </div>
-        {(hoveredChord || selectedChord) && (
-          <div
-            className="fixed"
-            style={{
-              top: (selectedChord || hoveredChord)!.top + 20,
-              left: Math.max(10, (selectedChord || hoveredChord)!.left - 100),
-              width: '300px',
-              height: '200px',
-              zIndex: 100,
-            }}
-            onClick={() => setSelectedChord(null)}
-          >
-            <KeyboardChordVisualizer
-              chordName={(selectedChord || hoveredChord)!.name}
-              position={{ top: 0, left: 0 }}
-            />
+  return (
+    <div className="whitespace-pre-wrap font-mono relative">
+      <h2>{title}</h2>
+      <div className="grid grid-flow-col auto-cols-fr gap-8">
+        {columnContents.map((column, colIndex) => (
+          <div key={colIndex} className="flex flex-col space-y-1">
+            {column.map((line, lineIndex) => (
+              <p key={lineIndex} className="my-0 leading-6">
+                {line.parts.map((part, partIndex) => {
+                  if (part.type === 'chord') {
+                    const transposedChord = transposeChord(part.content.trim(), transpose);
+                    return (
+                      <Chord
+                        key={partIndex}
+                        content={transposedChord}
+                        onChordClick={handleChordClick}
+                        onChordMouseEnter={handleChordMouseEnter}
+                        onChordMouseLeave={handleChordMouseLeave}
+                        isSelected={selectedChord?.name === transposedChord}
+                      />
+                    );
+                  }
+                  return <span key={partIndex}>{part.content}</span>;
+                })}
+              </p>
+            ))}
           </div>
-        )}
+        ))}
       </div>
-    );
-  }
+      {(hoveredChord || selectedChord) && (
+        <div
+          className="fixed"
+          style={{
+            top: (selectedChord || hoveredChord)!.top + 60,
+            left: Math.max(10, (selectedChord || hoveredChord)!.left - 100),
+            width: '300px',
+            height: '200px',
+            zIndex: 100,
+          }}
+          onClick={() => setSelectedChord(null)}
+        >
+          <KeyboardChordVisualizer
+            chordName={(selectedChord || hoveredChord)!.name}
+            position={{ top: 0, left: 0 }}
+          />
+        </div>
+      )}
+    </div>
+  );
 };

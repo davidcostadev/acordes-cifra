@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { ChordDisplay } from './components/ChordDisplay';
 import { SongList } from './components/SongList';
-import { SongResult } from './components/SongResult';
 import { SongContent } from './components/SongContent';
 import { KeyDisplay } from './components/KeyDisplay';
 import { KeyboardChordVisualizer } from './components/KeyboardChordVisualizer';
@@ -80,54 +78,65 @@ function App() {
     });
   };
 
+  const handleColumnsChange = (amount: number) => {
+    setColumns((prev) => {
+      const newValue = prev + amount;
+      // Limit columns range to 1 to 4
+      return Math.min(Math.max(newValue, 1), 4);
+    });
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <header>
         <SongList songs={SONGS} onSongSelect={handleSongSelect} />
       </header>
       <div className="flex flex-col gap-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="col-span-2">
-            {selectedSong && (
-              <div className="flex flex-col gap-4">
-                <div className="flex gap-4 items-center">
-                  <div className="flex items-center gap-2">
-                    <span>Tom:</span>
-                    <div className="flex items-center gap-1">
-                      <button
-                        onClick={() => handleTransposeChange(-1)}
-                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                      >
-                        -
-                      </button>
-                      <KeyDisplay fileName={selectedSong} transpose={transpose} />
-                      <button
-                        onClick={() => handleTransposeChange(1)}
-                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                  <label className="flex items-center gap-2">
-                    <span>Columns:</span>
-                    <input
-                      type="number"
-                      value={columns}
-                      onChange={(e) => setColumns(Number(e.target.value))}
-                      className="border rounded px-2 py-1 w-20"
-                      min={1}
-                      max={3}
-                    />
-                  </label>
+        {selectedSong && (
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-4 items-center">
+              <div className="flex items-center gap-2">
+                <span>Tom:</span>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => handleTransposeChange(-1)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  >
+                    -
+                  </button>
+                  <KeyDisplay fileName={selectedSong} transpose={transpose} />
+                  <button
+                    onClick={() => handleTransposeChange(1)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  >
+                    +
+                  </button>
                 </div>
-                <SongResult columns={columns}>
-                  <SongContent fileName={selectedSong} transpose={transpose} columns={columns} />
-                </SongResult>
               </div>
-            )}
+              <div className="flex items-center gap-2">
+                <span>Colunas:</span>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => handleColumnsChange(-1)}
+                    disabled={columns <= 1}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    -
+                  </button>
+                  <span className="w-8 text-center">{columns}</span>
+                  <button
+                    onClick={() => handleColumnsChange(1)}
+                    disabled={columns >= 4}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+            <SongContent fileName={selectedSong} transpose={transpose} columns={columns} />
           </div>
-        </div>
+        )}
 
         <div className="mt-8">
           <h2 className="text-2xl font-bold mb-4">Chord Visualizer</h2>
