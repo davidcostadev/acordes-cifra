@@ -1,1 +1,19 @@
-@import 'tailwindcss';
+@import 'tailwindcss/preflight';
+@tailwind utilities;
+@reference "tailwindcss";
+
+@theme {
+  --font-lucida: 'Lucida Console', 'Cousine', 'Monaco', 'monospace';
+}
+
+.song-result pre {
+  @apply font-lucida leading-relaxed my-4;
+}
+
+.song-result pre b {
+  @apply text-blue-600 cursor-pointer font-bold;
+}
+
+.song-result pre b:hover {
+  @apply text-white bg-blue-600 px-1 -mx-1 rounded cursor-pointer font-bold no-underline;
+}

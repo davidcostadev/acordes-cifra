@@ -11,6 +11,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.4
         version: 4.1.4(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
+      chordsheetjs:
+        specifier: ^12.1.3
+        version: 12.1.3
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -712,6 +715,10 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
+
+  chordsheetjs@12.1.3:
+    resolution: {integrity: sha512-chTQB9UfsjdJseSP3HD18KZMmtIefDg7VAxi0/JQ2lNLKdHtvSQYmCi2UXRHd9lxzeTt9GU/vnmw2t35Byes/A==}
+    engines: {node: '>=16'}
 
   color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
@@ -1865,6 +1872,8 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+
+  chordsheetjs@12.1.3: {}
 
   color-convert@2.0.1:
     dependencies:
