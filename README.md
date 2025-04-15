@@ -12,10 +12,10 @@ Criando um acorde de Dó (C) conforme este exemplo ![exemplo c](exemplo-c.png).
 let biblioteca = new BibliotecaAcorde();
 
 // Busca o acorde de Dó (C) da biblioteca
-let acorde = biblioteca.getAcordePorCifra("C");
+let acorde = biblioteca.getAcordePorCifra('C');
 
 // Instância um novo acorde
-let novoAcorde = new Acorde(acorde.n, acorde.m, acorde.d,acorde.p);
+let novoAcorde = new Acorde(acorde.n, acorde.m, acorde.d, acorde.p);
 
 /**
  * Retrona um canvas para ser inserido no nó e um elemento por append(),
@@ -28,16 +28,16 @@ Sendo que a biblioteca é gerada por esta notação de texto **"X 3 2 0 1 0"** c
 
 #### Atualmente contempla a criação:
 
-* Grelha simples de acorde
-* Grelha avançada de acorde
-* Digitação
-* Número do dedo para digitação
-* Pestanas simples
-* Biblioteca de acordes básicos
-* Leitura de cifra para apresentar acorde
-* Transposição de acorde
-* Divisão em colunas da música
+- Grelha simples de acorde
+- Grelha avançada de acorde
+- Digitação
+- Número do dedo para digitação
+- Pestanas simples
+- Biblioteca de acordes básicos
+- Leitura de cifra para apresentar acorde
+- Transposição de acorde
+- Divisão em colunas da música
 
 ## TODO
 
-* Grelha com capotraste
+- Grelha com capotraste

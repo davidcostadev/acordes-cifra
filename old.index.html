@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acordes Cifra</title>    
+    <style>
+        @font-face {
+            font-family: "Lucida Console";
+            src: url(lucon.ttf);
+        }
+        h1, h2, h3, h4, h5, p {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        body{
+            margin-left: 5em;
+            margin-right: 5em;
+        }
+        .row{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+        }
+        .col{
+            flex: 1;
+            flex-direction: column;
+        }
+        #resultado > pre, #resultado > .row > .col > pre{
+            font-family: "Lucida Console", Cousine, Monaco,monospace;
+            line-height: 1.5;
+            margin: 1em 0px;            
+        }
+        #resultado > pre > b, #resultado > .row > .col > pre > b {
+            color: #2e7ca9;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        #resultado > pre > b:hover, #resultado > .row > .col > pre > b:hover {
+            color: #FFFFFF;
+            background-color: #2e7ca9;
+            padding: 0 4px;
+            margin: 0 -4px;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;            
+            font-weight: 700;
+        }
+        .musicas > p {
+            cursor: pointer;
+            font-weight: 700;
+            color: #2e7ca9;
+        }
+        canvas{
+            /* border-radius: 5px;
+            border: 1px solid black; */
+            border-radius: 8px;
+            box-shadow: 0 0 6px 0 rgba(0,0,0,.12);
+        }
+    </style>
+</head>
+<body>
+    <h1>Exemplos de músicas cifradas</h1>
+    <p>Clique em uma música para ver as cifras</p>
+    <!-- <input type="number" name="posicao" step="1" id="posicao" value="0" onchange="transposicao(event)"> -->
+    <button onclick="transposicaoBotao(1)">+ 1/2 tom</button>
+    <button onclick="transposicaoBotao(-1)">- 1/2 tom</button>
+    <Button onclick="reset()">reset</Button>
+    <Button onclick="divisaoColuna(1)">&vellip;</Button>
+    <Button onclick="divisaoColuna(2)">&vellip;&vellip;</Button>
+    <Button onclick="divisaoColuna(3)">&vellip;&vellip;&vellip;</Button>
+    <div class="row">
+        <div class="col musicas">
+            <p data-arquivo="Nívea Soares - Teu Amor Não Falha" onclick="abrirMusica(event)">Nívea Soares - Teu Amor Não Falha</p>
+            <p data-arquivo="Fernandinho - Pra Sempre" onclick="abrirMusica(event)">Fernandinho - Pra Sempre</p>
+            <p data-arquivo="Aline Barros - Diante da Cruz" onclick="abrirMusica(event)">Aline Barros - Diante da Cruz</p>
+            <p data-arquivo="Nívea Soares - Eu Vou Construir" onclick="abrirMusica(event)">Nívea Soares - Eu Vou Construir</p>
+            <p data-arquivo="Nívea Soares - Que Se Abram Os Céus" onclick="abrirMusica(event)">Nívea Soares - Que Se Abram Os Céus</p>
+            <p data-arquivo="Gabriel Guedes - Nada Mais" onclick="abrirMusica(event)">Gabriel Guedes - Nada Mais</p>
+        </div>
+        <div class="col musicas">
+            <p data-arquivo="Marcus Salles - Estamos de Pé" onclick="abrirMusica(event)">Marcus Salles - Estamos de Pé</p>
+            <p data-arquivo="Diante do Trono - Levanto Um Aleluia (part. Isaías Saad)" onclick="abrirMusica(event)">Diante do Trono - Levanto Um Aleluia</p>
+            <p data-arquivo="Relevans Music - Vencedor" onclick="abrirMusica(event)">Relevans Music - Vencedor</p>
+            <p data-arquivo="Fernandinho - Porque Ele Vive _ Cristo Valerá (Pot-Pourri)" onclick="abrirMusica(event)">Fernandinho - Porque Ele Vive</p>
+            <p data-arquivo="Morada - Jesus em tua presença" onclick="abrirMusica(event)">Morada - Jesus em tua presença</p>
+            <p data-arquivo="Mauro Henrique - Em Teus Braços" onclick="abrirMusica(event)">Mauro Henrique - Em Teus Braços</p>
+            <p data-arquivo="Fernandinho - Pai de Multidões" onclick="abrirMusica(event)">Fernandinho - Pai de Multidões</p>
+        </div>
+        <div class="col musicas">
+            <p data-arquivo="Morada - Só Tu És Santo" onclick="abrirMusica(event)">Morada - Só Tu És Santo</p>
+            <p data-arquivo="Paulo César Baruk - Ele Continua Sendo Bom" onclick="abrirMusica(event)">Paulo César Baruk - Ele Continua Sendo Bom</p>
+            <p data-arquivo="Trazendo a Arca - Tua Graça Me Basta" onclick="abrirMusica(event)">Trazendo a Arca - Tua Graça Me Basta</p>
+            <p data-arquivo="Bethel Church - Onde For, Eu Vou (Where Go i Go)" onclick="abrirMusica(event)">Bethel Church - Onde For, Eu Vou (Where Go i Go)</p>
+            <p data-arquivo="Felipe Souza - Acende um fogo" onclick="abrirMusica(event)">Felipe Souza - Acende um fogo</p>
+            <p data-arquivo="Morada - Emaús" onclick="abrirMusica(event)">Morada - Emaús</p>  
+            <p data-arquivo="Fernandinho - Único" onclick="abrirMusica(event)">Fernandinho - Único</p>  
+            <p data-arquivo="Eli Soares - Aos Pes da Cruz" onclick="abrirMusica(event)">Eli Soares - Aos Pés da Cruz</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" id="resultado">
+        </div>
+    </div>
+    <h1>Exemplo de desenho de acordes com canvas</h1>
+
+    <div class="row">
+        <div class="col" id="acordes">
+            <h3>Canvas</h3>
+        </div>        
+        <div class="col">
+            <h3>Imagem exemplo</h3>
+            <img src="exemplo-c.png" alt="Exemplo cifra acorde de DÓ (C)">
+        </div>
+    </div>
+    <!-- scripts -->
+    <script src="acordes.js"></script>
+    <script src="musica.js"></script>
+</body>
+</html>
