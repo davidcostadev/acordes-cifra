@@ -4,6 +4,7 @@ import { SongList } from './components/SongList';
 import { SongResult } from './components/SongResult';
 import { SongContent } from './components/SongContent';
 import { KeyDisplay } from './components/KeyDisplay';
+import { KeyboardChordVisualizer } from './components/KeyboardChordVisualizer';
 
 const SONGS = [
   { title: 'Nívea Soares - Teu Amor Não Falha', fileName: 'Nívea Soares - Teu Amor Não Falha' },
@@ -81,11 +82,11 @@ function App() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <header>
+        <SongList songs={SONGS} onSongSelect={handleSongSelect} />
+      </header>
       <div className="flex flex-col gap-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="col-span-1">
-            <SongList songs={SONGS} onSongSelect={handleSongSelect} />
-          </div>
           <div className="col-span-2">
             {selectedSong && (
               <div className="flex flex-col gap-4">
@@ -148,8 +149,8 @@ function App() {
 
           <div className="flex flex-col md:flex-row items-center gap-8 justify-center">
             <div className="flex flex-col items-center">
-              <h3 className="text-xl font-semibold mb-4">Guitar Chord</h3>
-              <ChordDisplay chordName={selectedChord} />
+              <h3 className="text-xl font-semibold mb-4">Piano Chord</h3>
+              <KeyboardChordVisualizer chordName={selectedChord} position={{ top: 0, left: 0 }} />
             </div>
           </div>
         </div>
