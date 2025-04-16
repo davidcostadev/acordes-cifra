@@ -178,7 +178,7 @@ export const ChordVisualizer = ({
     <div
       className="absolute bg-white rounded-lg shadow-lg p-2"
       style={{
-        top: position.top - 140,
+        top: position.top - 20,
         left: position.left - 55,
         zIndex: 100,
       }}

@@ -157,11 +157,11 @@ function App() {
           isOpen={isMenuOpen}
         />
       </header>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2.5 py-8">
         <div className="flex flex-col gap-8">
           {selectedSong && (
             <div className="flex flex-col gap-4">
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-4 items-center flex-wrap">
                 <div className="flex items-center gap-2">
                   <span>Tom:</span>
                   <div className="flex items-center gap-1">

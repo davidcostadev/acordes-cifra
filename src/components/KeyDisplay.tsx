@@ -34,7 +34,7 @@ export const KeyDisplay: React.FC<KeyDisplayProps> = ({ fileName, transpose }) =
   const displayKey = transpose === 0 ? originalKey : getTransposedKey(originalKey, transpose);
 
   return (
-    <div className="w-12 text-center font-mono font-bold" data-testid="key-display">
+    <div className="w-8 text-center font-mono font-bold" data-testid="key-display">
       {displayKey}
     </div>
   );

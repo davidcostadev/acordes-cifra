@@ -152,7 +152,7 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
         {columnContents.map((column, colIndex) => (
           <div key={colIndex} className="flex flex-col space-y-1">
             {column.map((line, lineIndex) => (
-              <p key={lineIndex} className="my-0 leading-6">
+              <p key={lineIndex} className="my-0 leading-5 text-sm">
                 {line.parts.map((part, partIndex) => {
                   if (part.type === 'chord') {
                     const transposedChord = transposeChord(part.content.trim(), transpose);
