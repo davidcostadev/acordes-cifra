@@ -1,43 +1,23 @@
 # Acordes Cifra
 
-Exemplo de acordes gerados por javascript em canvas.
+Aplicação web para visualizar e transpor cifras de músicas com um visualizador interativo de acordes.
 
-![Exemplo de musica](captura2.png)
-![Exemplo de acordes gerados](captura1.png)
+## Como usar
 
-Criando um acorde de Dó (C) conforme este exemplo ![exemplo c](exemplo-c.png).
+1. Instale as dependências:
 
-```javascript
-// Instância a biblioteca de acordes
-let biblioteca = new BibliotecaAcorde();
-
-// Busca o acorde de Dó (C) da biblioteca
-let acorde = biblioteca.getAcordePorCifra('C');
-
-// Instância um novo acorde
-let novoAcorde = new Acorde(acorde.n, acorde.m, acorde.d, acorde.p);
-
-/**
- * Retrona um canvas para ser inserido no nó e um elemento por append(),
- * ex: campoAcorde.appendChild(novoAcorde.montaAcorde());
- */
-novoAcorde.montaAcorde();
+```bash
+pnpm install
 ```
 
-Sendo que a biblioteca é gerada por esta notação de texto **"X 3 2 0 1 0"** comum em cifras.
+2. Inicie a aplicação:
 
-#### Atualmente contempla a criação:
+```bash
+pnpm dev
+```
 
-- Grelha simples de acorde
-- Grelha avançada de acorde
-- Digitação
-- Número do dedo para digitação
-- Pestanas simples
-- Biblioteca de acordes básicos
-- Leitura de cifra para apresentar acorde
-- Transposição de acorde
-- Divisão em colunas da música
+A aplicação estará disponível em `http://localhost:5173`
 
-## TODO
+## Créditos
 
-- Grelha com capotraste
+Baseado em [acordes-cifra](https://github.com/italozaina/acordes-cifra)
