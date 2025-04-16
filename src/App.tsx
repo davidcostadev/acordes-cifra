@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SongList } from './components/SongList';
 import { SongContent } from './components/SongContent';
 import { KeyDisplay } from './components/KeyDisplay';
@@ -59,15 +59,65 @@ const getTransposedKey = (originalKey: string, semitones: number): string => {
 };
 
 function App() {
-  const [selectedSong, setSelectedSong] = useState<string | null>(
-    'Nívea Soares - Teu Amor Não Falha'
-  );
-  const [transpose, setTranspose] = useState(0);
-  const [columns, setColumns] = useState(1);
+  const [selectedSong, setSelectedSong] = useState<string | null>(() => {
+    // Try to get from URL first, then localStorage, then default
+    const params = new URLSearchParams(window.location.search);
+    const urlSong = params.get('song');
+    if (urlSong) return urlSong;
+
+    const storedSong = localStorage.getItem('selectedSong');
+    if (storedSong) return storedSong;
+
+    return 'Nívea Soares - Teu Amor Não Falha';
+  });
+
+  const [transpose, setTranspose] = useState(() => {
+    // Try to get from URL first, then localStorage, then default
+    const params = new URLSearchParams(window.location.search);
+    const urlTranspose = params.get('transpose');
+    if (urlTranspose) return parseInt(urlTranspose);
+
+    const storedTranspose = localStorage.getItem('transpose');
+    if (storedTranspose) return parseInt(storedTranspose);
+
+    return 0;
+  });
+
+  const [columns, setColumns] = useState(() => {
+    // Try to get from URL first, then localStorage, then default
+    const params = new URLSearchParams(window.location.search);
+    const urlColumns = params.get('columns');
+    if (urlColumns) return parseInt(urlColumns);
+
+    const storedColumns = localStorage.getItem('columns');
+    if (storedColumns) return parseInt(storedColumns);
+
+    return 1;
+  });
+
   const [selectedChord, setSelectedChord] = useState('C');
+
+  // Update URL and localStorage when state changes
+  useEffect(() => {
+    if (!selectedSong) return;
+
+    // Update URL
+    const params = new URLSearchParams(window.location.search);
+    params.set('song', selectedSong);
+    params.set('transpose', transpose.toString());
+    params.set('columns', columns.toString());
+    window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+
+    // Update localStorage
+    localStorage.setItem('selectedSong', selectedSong);
+    localStorage.setItem('transpose', transpose.toString());
+    localStorage.setItem('columns', columns.toString());
+  }, [selectedSong, transpose, columns]);
 
   const handleSongSelect = (fileName: string) => {
     setSelectedSong(fileName);
+    // Reset transpose to 0
+    setTranspose(0);
   };
 
   const handleTransposeChange = (amount: number) => {
@@ -85,6 +135,8 @@ function App() {
       return Math.min(Math.max(newValue, 1), 4);
     });
   };
+
+  console.log({ transpose });
 
   return (
     <div className="container mx-auto px-4 py-8">

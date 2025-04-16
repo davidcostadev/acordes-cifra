@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
+import * as Scale from '@tonaljs/scale';
+import { Chord } from '@tonaljs/tonal';
 
 interface CustomChord {
   n: string;
@@ -26,35 +28,62 @@ interface UseSongProcessingResult {
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const detectKey = (lines: ProcessedLine[]): string => {
-  const chordCounts: { [key: string]: number } = {};
+  const uniqueChords = new Set<string>();
 
-  // Count occurrences of each root note
+  // Collect all chords
   lines.forEach((line) => {
     line.parts.forEach((part) => {
       if (part.type === 'chord') {
-        const match = part.content.match(/^([A-G][#b]?)/);
-        if (match) {
-          const rootNote = match[1];
-          // Normalize flats to sharps
-          const normalizedRoot = rootNote.replace('b', '#');
-          chordCounts[normalizedRoot] = (chordCounts[normalizedRoot] || 0) + 1;
+        if (part.content) {
+          const rootNote = part.content;
+          // const normalizedRoot = Note.simplify(rootNote);
+          // console.log(`${rootNote} - ${normalizedRoot}`);
+          uniqueChords.add(rootNote);
         }
       }
     });
   });
 
-  // Find the most common root note
-  let maxCount = 0;
-  let detectedKey = 'C'; // Default to C if no chords found
+  const chordArray = Array.from(uniqueChords);
+  if (chordArray.length === 0) return 'C'; // Default to C if no chords found
 
-  Object.entries(chordCounts).forEach(([note, count]) => {
-    if (count > maxCount) {
-      maxCount = count;
-      detectedKey = note;
+  // Try to detect scales for each possible tonic
+  let bestMatch = {
+    tonic: 'C',
+    matchCount: 0,
+    scales: [] as string[],
+  };
+
+  const notesFromChords: string[] = [
+    ...new Set(
+      ...chordArray.flatMap((chord) => {
+        return Chord.get(chord).notes;
+      })
+    ),
+  ];
+
+  NOTES.forEach((tonic) => {
+    const scales = Scale.detect(notesFromChords, { tonic, match: 'fit' });
+
+    // Prefer scales with more matches
+    if (scales.length > bestMatch.matchCount) {
+      bestMatch = {
+        tonic,
+        matchCount: scales.length,
+        scales,
+      };
+    }
+    // If equal number of matches, prefer if the tonic chord is in our chord list
+    else if (scales.length === bestMatch.matchCount && chordArray.includes(tonic)) {
+      bestMatch = {
+        tonic,
+        matchCount: scales.length,
+        scales,
+      };
     }
   });
 
-  return detectedKey;
+  return bestMatch.tonic;
 };
 
 export const useSongProcessing = (fileName: string | null): UseSongProcessingResult => {
@@ -167,8 +196,15 @@ export const useSongProcessing = (fileName: string | null): UseSongProcessingRes
         const processed = lines.slice(1).map((line) => processLine(line));
         setProcessedContent(processed);
 
+        console.log({ processed });
         // Detect and set the original key
-        const detectedKey = detectKey(processed);
+        const detectedKey = detectKey(processed)
+          .replace('b', '#')
+          .replace('B#', 'C')
+          .replace('E#', 'F')
+          .replace('Cb', 'B')
+          .replace('Fb', 'E');
+
         setOriginalKey(detectedKey);
       } catch (error) {
         setError(error instanceof Error ? error.message : 'An error occurred');

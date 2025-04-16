@@ -4,7 +4,8 @@ import { useSongProcessing } from '../hooks/useSongProcessing';
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const getTransposedKey = (originalKey: string, semitones: number): string => {
-  const normalizedKey = originalKey.replace('b', '#');
+  const normalizedKey = originalKey;
+
   const currentIndex = NOTES.indexOf(normalizedKey);
   if (currentIndex === -1) return originalKey;
 
@@ -21,7 +22,7 @@ interface KeyDisplayProps {
 
 export const KeyDisplay: React.FC<KeyDisplayProps> = ({ fileName, transpose }) => {
   const { originalKey, isLoading, error } = useSongProcessing(fileName);
-
+  console.log({ originalKey, transpose });
   if (isLoading) {
     return <div className="w-12 text-center font-mono">...</div>;
   }
@@ -32,5 +33,9 @@ export const KeyDisplay: React.FC<KeyDisplayProps> = ({ fileName, transpose }) =
 
   const displayKey = transpose === 0 ? originalKey : getTransposedKey(originalKey, transpose);
 
-  return <div className="w-12 text-center font-mono font-bold">{displayKey}</div>;
+  return (
+    <div className="w-12 text-center font-mono font-bold" data-testid="key-display">
+      {displayKey}
+    </div>
+  );
 };

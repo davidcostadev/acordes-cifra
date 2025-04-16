@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
+    "@tonaljs/key": "^4.11.1",
+    "@tonaljs/note": "^4.12.0",
+    "@tonaljs/scale": "^4.13.2",
+    "@tonaljs/tonal": "^4.10.0",
     "chordsheetjs": "^12.1.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
