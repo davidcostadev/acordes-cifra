@@ -59,6 +59,7 @@ const getTransposedKey = (originalKey: string, semitones: number): string => {
 };
 
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState<string | null>(() => {
     // Try to get from URL first, then localStorage, then default
     const params = new URLSearchParams(window.location.search);
@@ -139,79 +140,94 @@ function App() {
   console.log({ transpose });
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header>
-        <SongList songs={SONGS} onSongSelect={handleSongSelect} />
+    <div>
+      <header className="bg-gray-100 border-b border-gray-200 px-2 py-2 flex items-center">
+        <button
+          data-testid="hamburger-menu"
+          className="flex items-center justify-center px-1 border hover:border-blue-500 active:text-white hover:bg-blue-400 rounded-full w-8 h-8 border-transparent active:bg-blue-400 active:border-blue-400 transition-colors duration-200"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <span className="text-lg">☰</span>
+        </button>
+        <h1 className="text-xl font-bold ml-2">David Cifras</h1>
+        <SongList
+          songs={SONGS}
+          onSongSelect={handleSongSelect}
+          onClose={() => setIsMenuOpen(false)}
+          isOpen={isMenuOpen}
+        />
       </header>
-      <div className="flex flex-col gap-8">
-        {selectedSong && (
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-4 items-center">
-              <div className="flex items-center gap-2">
-                <span>Tom:</span>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => handleTransposeChange(-1)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                  >
-                    -
-                  </button>
-                  <KeyDisplay fileName={selectedSong} transpose={transpose} />
-                  <button
-                    onClick={() => handleTransposeChange(1)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                  >
-                    +
-                  </button>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col gap-8">
+          {selectedSong && (
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-4 items-center">
+                <div className="flex items-center gap-2">
+                  <span>Tom:</span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => handleTransposeChange(-1)}
+                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    >
+                      -
+                    </button>
+                    <KeyDisplay fileName={selectedSong} transpose={transpose} />
+                    <button
+                      onClick={() => handleTransposeChange(1)}
+                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>Colunas:</span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => handleColumnsChange(-1)}
+                      disabled={columns <= 1}
+                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      -
+                    </button>
+                    <span className="w-8 text-center">{columns}</span>
+                    <button
+                      onClick={() => handleColumnsChange(1)}
+                      disabled={columns >= 4}
+                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span>Colunas:</span>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => handleColumnsChange(-1)}
-                    disabled={columns <= 1}
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    -
-                  </button>
-                  <span className="w-8 text-center">{columns}</span>
-                  <button
-                    onClick={() => handleColumnsChange(1)}
-                    disabled={columns >= 4}
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
+              <SongContent fileName={selectedSong} transpose={transpose} columns={columns} />
             </div>
-            <SongContent fileName={selectedSong} transpose={transpose} columns={columns} />
-          </div>
-        )}
+          )}
 
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Chord Visualizer</h2>
-          <div className="flex flex-wrap gap-2 mb-8">
-            {EXAMPLE_CHORDS.map((chord) => (
-              <button
-                key={chord}
-                onClick={() => setSelectedChord(chord)}
-                className={`px-4 py-2 rounded-lg ${
-                  selectedChord === chord
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-              >
-                {chord}
-              </button>
-            ))}
-          </div>
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold mb-4">Chord Visualizer</h2>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {EXAMPLE_CHORDS.map((chord) => (
+                <button
+                  key={chord}
+                  onClick={() => setSelectedChord(chord)}
+                  className={`px-4 py-2 rounded-lg ${
+                    selectedChord === chord
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-200 hover:bg-gray-300'
+                  }`}
+                >
+                  {chord}
+                </button>
+              ))}
+            </div>
 
-          <div className="flex flex-col md:flex-row items-center gap-8 justify-center">
-            <div className="flex flex-col items-center">
-              <h3 className="text-xl font-semibold mb-4">Piano Chord</h3>
-              <KeyboardChordVisualizer chordName={selectedChord} position={{ top: 0, left: 0 }} />
+            <div className="flex flex-col md:flex-row items-center gap-8 justify-center">
+              <div className="flex flex-col items-center">
+                <h3 className="text-xl font-semibold mb-4">Piano Chord</h3>
+                <KeyboardChordVisualizer chordName={selectedChord} position={{ top: 0, left: 0 }} />
+              </div>
             </div>
           </div>
         </div>
