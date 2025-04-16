@@ -19,13 +19,55 @@ interface ProcessedLine {
 interface UseSongProcessingResult {
   title: string;
   processedContent: ProcessedLine[];
+  processedContentTransposed: ProcessedLine[];
   customChords: CustomChord[];
   originalKey: string;
+  transposedKey: string;
   isLoading: boolean;
   error: string | null;
 }
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+const transposeChord = (chord: string, semitones: number): string => {
+  // Handle empty chords
+  if (!chord) return chord;
+
+  // Find the root note and any modifiers
+  const match = chord.match(/^([A-G][#b]?)(.*)$/);
+  if (!match) return chord;
+
+  const [, rootNote, modifiers] = match;
+
+  // Convert flats to sharps for consistency
+  let normalizedRoot = rootNote.replace('b', '#');
+  if (rootNote.includes('b')) {
+    const index = NOTES.indexOf(NOTES[(NOTES.indexOf(rootNote[0]) + 11) % 12]);
+    normalizedRoot = NOTES[index];
+  }
+
+  // Find the index of the root note
+  const noteIndex = NOTES.indexOf(normalizedRoot);
+  if (noteIndex === -1) return chord;
+
+  // Calculate the new note index
+  let newIndex = (noteIndex + semitones + 12) % 12;
+  if (newIndex < 0) newIndex += 12;
+
+  // Return the new chord
+  return NOTES[newIndex] + modifiers;
+};
+
+const getTransposedKey = (originalKey: string, semitones: number): string => {
+  const normalizedKey = originalKey;
+  const currentIndex = NOTES.indexOf(normalizedKey);
+  if (currentIndex === -1) return originalKey;
+
+  let newIndex = (currentIndex + semitones + 12) % 12;
+  if (newIndex < 0) newIndex += 12;
+
+  return NOTES[newIndex];
+};
 
 const detectKey = (lines: ProcessedLine[]): string => {
   const uniqueChords = new Set<string>();
@@ -86,7 +128,10 @@ const detectKey = (lines: ProcessedLine[]): string => {
   return bestMatch.tonic;
 };
 
-export const useSongProcessing = (fileName: string | null): UseSongProcessingResult => {
+export const useSongProcessing = (
+  fileName: string | null,
+  transpose: number = 0
+): UseSongProcessingResult => {
   const [title, setTitle] = useState<string>('');
   const [processedContent, setProcessedContent] = useState<ProcessedLine[]>([]);
   const [customChords, setCustomChords] = useState<CustomChord[]>([]);
@@ -216,16 +261,41 @@ export const useSongProcessing = (fileName: string | null): UseSongProcessingRes
     fetchSong();
   }, [fileName]);
 
+  const processedContentTransposed = useMemo(() => {
+    return processedContent.map((line) => ({
+      parts: line.parts.map((part) => ({
+        type: part.type,
+        content:
+          part.type === 'chord' ? transposeChord(part.content.trim(), transpose) : part.content,
+      })),
+    }));
+  }, [processedContent, transpose]);
+
+  const transposedKey = useMemo(() => {
+    return getTransposedKey(originalKey, transpose);
+  }, [originalKey, transpose]);
+
   const result = useMemo(
     () => ({
       title,
       processedContent,
+      processedContentTransposed,
       customChords,
       originalKey,
+      transposedKey,
       isLoading,
       error,
     }),
-    [title, processedContent, customChords, originalKey, isLoading, error]
+    [
+      title,
+      processedContent,
+      processedContentTransposed,
+      customChords,
+      originalKey,
+      transposedKey,
+      isLoading,
+      error,
+    ]
   );
 
   return result;

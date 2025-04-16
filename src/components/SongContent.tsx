@@ -87,7 +87,10 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
   const [selectedChord, setSelectedChord] = useState<ChordPosition | null>(null);
   const visualizerRef = useRef<HTMLDivElement>(null);
 
-  const { title, processedContent, originalKey, isLoading, error } = useSongProcessing(fileName);
+  const { title, processedContentTransposed, originalKey, isLoading, error } = useSongProcessing(
+    fileName,
+    transpose
+  );
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -152,11 +155,11 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
   }
 
   // Split content into columns vertically
-  const totalLines = processedContent.length;
+  const totalLines = processedContentTransposed.length;
   const linesPerColumn = Math.ceil(totalLines / columns);
   const columnContents: ProcessedLine[][] = Array.from({ length: columns }, (_, columnIndex) => {
     const startIndex = columnIndex * linesPerColumn;
-    return processedContent.slice(startIndex, startIndex + linesPerColumn);
+    return processedContentTransposed.slice(startIndex, startIndex + linesPerColumn);
   });
 
   return (
@@ -169,15 +172,14 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
               <p key={lineIndex} className="my-0 leading-5 text-sm">
                 {line.parts.map((part, partIndex) => {
                   if (part.type === 'chord') {
-                    const transposedChord = transposeChord(part.content.trim(), transpose);
                     return (
                       <Chord
                         key={partIndex}
-                        content={transposedChord}
+                        content={part.content}
                         onChordClick={handleChordClick}
                         onChordMouseEnter={handleChordMouseEnter}
                         onChordMouseLeave={handleChordMouseLeave}
-                        isSelected={selectedChord?.name === transposedChord}
+                        isSelected={selectedChord?.name === part.content}
                       />
                     );
                   }
