@@ -1,5 +1,4 @@
-/** @jsxImportSource react */
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { KeyboardChordVisualizer } from './KeyboardChordVisualizer';
 import { useSongProcessing } from '../hooks/useSongProcessing';
 
@@ -16,50 +15,12 @@ interface ChordPosition {
   left: number;
 }
 
-interface CustomChord {
-  n: string;
-  m: string;
-  d: string | null;
-  p: boolean | null;
-}
-
 interface ProcessedLine {
   parts: {
     type: 'text' | 'chord';
     content: string;
   }[];
 }
-
-const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-const transposeChord = (chord: string, semitones: number): string => {
-  // Handle empty chords
-  if (!chord) return chord;
-
-  // Find the root note and any modifiers
-  const match = chord.match(/^([A-G][#b]?)(.*)$/);
-  if (!match) return chord;
-
-  const [, rootNote, modifiers] = match;
-
-  // Convert flats to sharps for consistency
-  let normalizedRoot = rootNote.replace('b', '#');
-  if (rootNote.includes('b')) {
-    const index = NOTES.indexOf(NOTES[(NOTES.indexOf(rootNote[0]) + 11) % 12]);
-    normalizedRoot = NOTES[index];
-  }
-
-  // Find the index of the root note
-  const noteIndex = NOTES.indexOf(normalizedRoot);
-  if (noteIndex === -1) return chord;
-
-  // Calculate the new note index
-  let newIndex = (noteIndex + semitones + 12) % 12;
-  if (newIndex < 0) newIndex += 12;
-
-  // Return the new chord
-  return NOTES[newIndex] + modifiers;
-};
 
 const Chord: React.FC<{
   content: string;
@@ -202,10 +163,7 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
             zIndex: 100,
           }}
         >
-          <KeyboardChordVisualizer
-            chordName={(selectedChord || hoveredChord)!.name}
-            position={{ top: 0, left: 0 }}
-          />
+          <KeyboardChordVisualizer chordName={(selectedChord || hoveredChord)!.name} />
         </div>
       )}
     </div>

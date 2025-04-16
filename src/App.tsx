@@ -43,21 +43,6 @@ const SONGS = [
   { title: 'Eli Soares - Aos Pes da Cruz', fileName: 'Eli Soares - Aos Pes da Cruz' },
 ];
 
-const EXAMPLE_CHORDS = ['C', 'Am', 'F', 'G', 'Dm', 'Em', 'C7', 'Fmaj7'];
-
-const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-const getTransposedKey = (originalKey: string, semitones: number): string => {
-  const normalizedKey = originalKey.replace('b', '#');
-  const currentIndex = NOTES.indexOf(normalizedKey);
-  if (currentIndex === -1) return originalKey;
-
-  let newIndex = (currentIndex + semitones + 12) % 12;
-  if (newIndex < 0) newIndex += 12;
-
-  return NOTES[newIndex];
-};
-
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedSong, setSelectedSong] = useState<string | null>(() => {
@@ -232,7 +217,7 @@ function App() {
             <div className="flex flex-col md:flex-row items-center gap-8 justify-center">
               <div className="flex flex-col items-center">
                 <h3 className="text-xl font-semibold mb-4">Piano Chord</h3>
-                <KeyboardChordVisualizer chordName={selectedChord} position={{ top: 0, left: 0 }} />
+                <KeyboardChordVisualizer chordName={selectedChord} />
               </div>
             </div>
           </div>

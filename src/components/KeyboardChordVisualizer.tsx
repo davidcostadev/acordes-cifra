@@ -2,10 +2,6 @@ import { Chord } from '@tonaljs/tonal';
 
 interface KeyboardChordVisualizerProps {
   chordName: string;
-  position: {
-    top: number;
-    left: number;
-  };
 }
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -42,7 +38,7 @@ const getBlackKeyOffset = (note: string): number => {
   }
 };
 
-export const KeyboardChordVisualizer = ({ chordName, position }: KeyboardChordVisualizerProps) => {
+export const KeyboardChordVisualizer = ({ chordName }: KeyboardChordVisualizerProps) => {
   const chordNotes = getChordNotes(chordName);
   console.log(chordNotes);
 
@@ -52,7 +48,7 @@ export const KeyboardChordVisualizer = ({ chordName, position }: KeyboardChordVi
       <div className="relative h-32 w-[16rem]">
         {/* White keys */}
         <div className="flex h-full">
-          {WHITE_KEYS.map((note, index) => (
+          {WHITE_KEYS.map((note) => (
             <div
               key={note}
               className={`relative border border-gray-300 rounded-b-md flex items-end justify-center pb-2 w-9
