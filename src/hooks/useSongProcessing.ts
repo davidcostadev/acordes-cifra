@@ -25,6 +25,7 @@ interface UseSongProcessingResult {
   transposedKey: string;
   isLoading: boolean;
   error: string | null;
+  chords: string[];
 }
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -69,25 +70,22 @@ const getTransposedKey = (originalKey: string, semitones: number): string => {
   return NOTES[newIndex];
 };
 
-const detectKey = (lines: ProcessedLine[]): string => {
+const getChords = (lines: ProcessedLine[]): string[] => {
   const uniqueChords = new Set<string>();
-
-  // Collect all chords
   lines.forEach((line) => {
     line.parts.forEach((part) => {
-      if (part.type === 'chord') {
-        if (part.content) {
-          const rootNote = part.content;
-          // const normalizedRoot = Note.simplify(rootNote);
-          // console.log(`${rootNote} - ${normalizedRoot}`);
-          uniqueChords.add(rootNote);
-        }
-      }
+      if (part.type === 'chord') uniqueChords.add(part.content);
     });
   });
+  const sortedChords = Array.from(uniqueChords).sort();
 
-  const chordArray = Array.from(uniqueChords);
-  if (chordArray.length === 0) return 'C'; // Default to C if no chords found
+  if (sortedChords.length === 0) return ['C'];
+
+  return sortedChords;
+};
+
+const detectKey = (lines: ProcessedLine[]): string => {
+  const chordArray = getChords(lines);
 
   // Try to detect scales for each possible tonic
   let bestMatch = {
@@ -95,7 +93,7 @@ const detectKey = (lines: ProcessedLine[]): string => {
     matchCount: 0,
     scales: [] as string[],
   };
-
+  console.log(chordArray);
   const notesFromChords: string[] = [
     ...new Set(
       ...chordArray.flatMap((chord) => {
@@ -275,6 +273,10 @@ export const useSongProcessing = (
     return getTransposedKey(originalKey, transpose);
   }, [originalKey, transpose]);
 
+  const chords = useMemo(() => {
+    return getChords(processedContent).map((chord) => transposeChord(chord, transpose));
+  }, [processedContent, transpose]);
+
   const result = useMemo(
     () => ({
       title,
@@ -285,6 +287,7 @@ export const useSongProcessing = (
       transposedKey,
       isLoading,
       error,
+      chords,
     }),
     [
       title,
@@ -295,6 +298,7 @@ export const useSongProcessing = (
       transposedKey,
       isLoading,
       error,
+      chords,
     ]
   );
 

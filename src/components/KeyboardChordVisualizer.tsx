@@ -1,4 +1,4 @@
-import React from 'react';
+import { Chord } from '@tonaljs/tonal';
 
 interface KeyboardChordVisualizerProps {
   chordName: string;
@@ -13,28 +13,13 @@ const BLACK_KEYS = ['C#', 'D#', 'F#', 'G#', 'A#'];
 const WHITE_KEYS = NOTES.filter((note) => !BLACK_KEYS.includes(note));
 
 const getChordNotes = (chordName: string): string[] => {
-  const baseNote = chordName.replace(/m|maj|dim|aug|[0-9]/g, '');
-  const baseIndex = NOTES.indexOf(baseNote);
-  const isMinor = chordName.includes('m') && !chordName.includes('maj');
-  const isDiminished = chordName.includes('dim');
-  const isAugmented = chordName.includes('aug');
+  const first = Chord.get(chordName).notes;
 
-  if (baseIndex === -1) return [];
-
-  const notes: string[] = [];
-  notes.push(NOTES[baseIndex]); // Root note
-
-  // Third
-  const thirdInterval = isMinor || isDiminished ? 3 : 4;
-  notes.push(NOTES[(baseIndex + thirdInterval) % 12]);
-
-  // Fifth
-  let fifthInterval = 7;
-  if (isDiminished) fifthInterval = 6;
-  if (isAugmented) fifthInterval = 8;
-  notes.push(NOTES[(baseIndex + fifthInterval) % 12]);
-
-  return notes;
+  if (first.length === 0) {
+    const [note, baixo] = chordName.split('/');
+    return [...Chord.get(note).notes, baixo];
+  }
+  return first;
 };
 
 const WHITE_KEY_WIDTH = 36; // px
@@ -59,6 +44,7 @@ const getBlackKeyOffset = (note: string): number => {
 
 export const KeyboardChordVisualizer = ({ chordName, position }: KeyboardChordVisualizerProps) => {
   const chordNotes = getChordNotes(chordName);
+  console.log(chordNotes);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-1 border border-gray-200">

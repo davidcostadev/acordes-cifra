@@ -3,7 +3,7 @@ import { SongList } from './components/SongList';
 import { SongContent } from './components/SongContent';
 import { KeyDisplay } from './components/KeyDisplay';
 import { KeyboardChordVisualizer } from './components/KeyboardChordVisualizer';
-
+import { useSongProcessing } from './hooks/useSongProcessing';
 const SONGS = [
   { title: 'Nívea Soares - Teu Amor Não Falha', fileName: 'Nívea Soares - Teu Amor Não Falha' },
   { title: 'Fernandinho - Pra Sempre', fileName: 'Fernandinho - Pra Sempre' },
@@ -97,6 +97,12 @@ function App() {
   });
 
   const [selectedChord, setSelectedChord] = useState('C');
+
+  const { chords, transposedKey } = useSongProcessing(selectedSong, transpose);
+
+  useEffect(() => {
+    setSelectedChord(transposedKey);
+  }, [transposedKey]);
 
   // Update URL and localStorage when state changes
   useEffect(() => {
@@ -208,7 +214,7 @@ function App() {
           <div className="mt-8">
             <h2 className="text-2xl font-bold mb-4">Chord Visualizer</h2>
             <div className="flex flex-wrap gap-2 mb-8">
-              {EXAMPLE_CHORDS.map((chord) => (
+              {chords.map((chord) => (
                 <button
                   key={chord}
                   onClick={() => setSelectedChord(chord)}
