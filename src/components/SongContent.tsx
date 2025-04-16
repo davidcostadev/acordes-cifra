@@ -118,10 +118,40 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
   // Split content into columns vertically
   const totalLines = processedContentTransposed.length;
   const linesPerColumn = Math.ceil(totalLines / columns);
-  const columnContents: ProcessedLine[][] = Array.from({ length: columns }, (_, columnIndex) => {
-    const startIndex = columnIndex * linesPerColumn;
-    return processedContentTransposed.slice(startIndex, startIndex + linesPerColumn);
-  });
+
+  const columnContents: ProcessedLine[][] = [];
+  let currentIndex = 0;
+
+  // Smart split that keeps chords with their lyrics
+  for (let col = 0; col < columns && currentIndex < totalLines; col++) {
+    const isLastColumn = col === columns - 1;
+    let endIndex = Math.min(currentIndex + linesPerColumn, totalLines);
+
+    // If not the last column, look ahead to find a better split point
+    if (!isLastColumn && endIndex < totalLines) {
+      // Look at a window of lines around the proposed split point
+      const windowStart = Math.max(endIndex - 2, currentIndex);
+      const windowEnd = Math.min(endIndex + 2, totalLines);
+
+      // Find the best split point that doesn't break chord/lyric pairs
+      for (let i = windowStart; i < windowEnd; i++) {
+        const currentLine = processedContentTransposed[i];
+        const nextLine = i + 1 < totalLines ? processedContentTransposed[i + 1] : null;
+
+        // Good split point if current line has no chords and next line starts with chords
+        if (
+          !currentLine.parts.some((p) => p.type === 'chord') &&
+          nextLine?.parts.some((p) => p.type === 'chord')
+        ) {
+          endIndex = i + 1;
+          break;
+        }
+      }
+    }
+
+    columnContents.push(processedContentTransposed.slice(currentIndex, endIndex));
+    currentIndex = endIndex;
+  }
 
   return (
     <div className="whitespace-pre-wrap font-mono relative">
