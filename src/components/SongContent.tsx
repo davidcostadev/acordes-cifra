@@ -1,5 +1,5 @@
 /** @jsxImportSource react */
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { KeyboardChordVisualizer } from './KeyboardChordVisualizer';
 import { useSongProcessing } from '../hooks/useSongProcessing';
 
@@ -85,8 +85,22 @@ const Chord: React.FC<{
 export const SongContent = ({ fileName, transpose, columns, renderKey }: SongContentProps) => {
   const [hoveredChord, setHoveredChord] = useState<ChordPosition | null>(null);
   const [selectedChord, setSelectedChord] = useState<ChordPosition | null>(null);
+  const visualizerRef = useRef<HTMLDivElement>(null);
 
   const { title, processedContent, originalKey, isLoading, error } = useSongProcessing(fileName);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (visualizerRef.current && !visualizerRef.current.contains(event.target as Node)) {
+        setSelectedChord(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   if (renderKey) {
     return renderKey(originalKey);
@@ -176,15 +190,15 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
       </div>
       {(hoveredChord || selectedChord) && (
         <div
+          ref={visualizerRef}
           className="fixed"
           style={{
-            top: (selectedChord || hoveredChord)!.top + 60,
+            top: (selectedChord || hoveredChord)!.top + 24,
             left: Math.max(10, (selectedChord || hoveredChord)!.left - 100),
-            width: '300px',
+            width: '266px',
             height: '200px',
             zIndex: 100,
           }}
-          onClick={() => setSelectedChord(null)}
         >
           <KeyboardChordVisualizer
             chordName={(selectedChord || hoveredChord)!.name}
