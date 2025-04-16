@@ -1,4 +1,4 @@
-# Acordes Cifra
+# Repertório
 
 Aplicação web para visualizar e transpor cifras de músicas com um visualizador interativo de acordes.
 
