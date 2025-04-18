@@ -41,6 +41,7 @@ const SONGS = [
   { title: 'Morada - Emaús', fileName: 'Morada - Emaús' },
   { title: 'Fernandinho - Único', fileName: 'Fernandinho - Único' },
   { title: 'Eli Soares - Aos Pes da Cruz', fileName: 'Eli Soares - Aos Pes da Cruz' },
+  { title: 'Kleber Lucas - Deus Cuida de Mim', fileName: 'Kleber Lucas - Deus Cuida de Mim' },
 ];
 
 function App() {
