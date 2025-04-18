@@ -35,8 +35,12 @@ const transposeChord = (chord: string, semitones: number): string => {
   if (!chord) return chord;
 
   // Find the root note and any modifiers
+  // D/E
   const match = chord.match(/^([A-G][#b]?)(.*)$/);
   if (!match) return chord;
+  // if (chord === 'D/E') {
+  //   console.log(chord, Chord.(chord));
+  // }
 
   const [, rootNote, modifiers] = match;
 
@@ -55,6 +59,17 @@ const transposeChord = (chord: string, semitones: number): string => {
   let newIndex = (noteIndex + semitones + 12) % 12;
   if (newIndex < 0) newIndex += 12;
 
+  // Get the modifiers notes
+  if (modifiers.includes('/')) {
+    const [chordPart, bassNote] = modifiers.split('/');
+    const modifierIndex = NOTES.indexOf(bassNote);
+    if (modifierIndex === -1) return chord;
+
+    let newModifierIndex = (modifierIndex + semitones + 12) % 12;
+    if (newModifierIndex < 0) newModifierIndex += 12;
+
+    return NOTES[newIndex] + chordPart + '/' + NOTES[newModifierIndex];
+  }
   // Return the new chord
   return NOTES[newIndex] + modifiers;
 };
