@@ -6,42 +6,46 @@ import { KeyboardChordVisualizer } from './components/KeyboardChordVisualizer';
 import { useSongProcessing } from './hooks/useSongProcessing';
 const SONGS = [
   { title: 'Nívea Soares - Teu Amor Não Falha', fileName: 'Nívea Soares - Teu Amor Não Falha' },
-  { title: 'Fernandinho - Pra Sempre', fileName: 'Fernandinho - Pra Sempre' },
-  { title: 'Aline Barros - Diante da Cruz', fileName: 'Aline Barros - Diante da Cruz' },
-  { title: 'Nívea Soares - Eu Vou Construir', fileName: 'Nívea Soares - Eu Vou Construir' },
-  { title: 'Nívea Soares - Que Se Abram Os Céus', fileName: 'Nívea Soares - Que Se Abram Os Céus' },
-  { title: 'Gabriel Guedes - Nada Mais', fileName: 'Gabriel Guedes - Nada Mais' },
-  { title: 'Marcus Salles - Estamos de Pé', fileName: 'Marcus Salles - Estamos de Pé' },
-  {
-    title: 'Diante do Trono - Levanto Um Aleluia (part. Isaías Saad)',
-    fileName: 'Diante do Trono - Levanto Um Aleluia (part. Isaías Saad)',
-  },
-  { title: 'Relevans Music - Vencedor', fileName: 'Relevans Music - Vencedor' },
-  {
-    title: 'Fernandinho - Porque Ele Vive _ Cristo Valerá (Pot-Pourri)',
-    fileName: 'Fernandinho - Porque Ele Vive _ Cristo Valerá (Pot-Pourri)',
-  },
-  { title: 'Morada - Jesus em tua presença', fileName: 'Morada - Jesus em tua presença' },
+  // { title: 'Fernandinho - Pra Sempre', fileName: 'Fernandinho - Pra Sempre' },
+  // { title: 'Aline Barros - Diante da Cruz', fileName: 'Aline Barros - Diante da Cruz' },
+  // { title: 'Nívea Soares - Eu Vou Construir', fileName: 'Nívea Soares - Eu Vou Construir' },
+  // { title: 'Nívea Soares - Que Se Abram Os Céus', fileName: 'Nívea Soares - Que Se Abram Os Céus' },
+  // { title: 'Gabriel Guedes - Nada Mais', fileName: 'Gabriel Guedes - Nada Mais' },
+  // { title: 'Marcus Salles - Estamos de Pé', fileName: 'Marcus Salles - Estamos de Pé' },
+  // {
+  //   title: 'Diante do Trono - Levanto Um Aleluia (part. Isaías Saad)',
+  //   fileName: 'Diante do Trono - Levanto Um Aleluia (part. Isaías Saad)',
+  // },
+  // { title: 'Relevans Music - Vencedor', fileName: 'Relevans Music - Vencedor' },
+  // {
+  //   title: 'Fernandinho - Porque Ele Vive _ Cristo Valerá (Pot-Pourri)',
+  //   fileName: 'Fernandinho - Porque Ele Vive _ Cristo Valerá (Pot-Pourri)',
+  // },
+  // { title: 'Morada - Jesus em tua presença', fileName: 'Morada - Jesus em tua presença' },
   { title: 'Mauro Henrique - Em Teus Braços', fileName: 'Mauro Henrique - Em Teus Braços' },
-  { title: 'Fernandinho - Pai de Multidões', fileName: 'Fernandinho - Pai de Multidões' },
-  { title: 'Morada - Só Tu És Santo', fileName: 'Morada - Só Tu És Santo' },
-  {
-    title: 'Paulo César Baruk - Ele Continua Sendo Bom',
-    fileName: 'Paulo César Baruk - Ele Continua Sendo Bom',
-  },
-  {
-    title: 'Trazendo a Arca - Tua Graça Me Basta',
-    fileName: 'Trazendo a Arca - Tua Graça Me Basta',
-  },
-  {
-    title: 'Bethel Church - Onde For, Eu Vou (Where Go i Go)',
-    fileName: 'Bethel Church - Onde For, Eu Vou (Where Go i Go)',
-  },
-  { title: 'Felipe Souza - Acende um fogo', fileName: 'Felipe Souza - Acende um fogo' },
-  { title: 'Morada - Emaús', fileName: 'Morada - Emaús' },
-  { title: 'Fernandinho - Único', fileName: 'Fernandinho - Único' },
+  // { title: 'Fernandinho - Pai de Multidões', fileName: 'Fernandinho - Pai de Multidões' },
+  // { title: 'Morada - Só Tu És Santo', fileName: 'Morada - Só Tu És Santo' },
+  // {
+  //   title: 'Paulo César Baruk - Ele Continua Sendo Bom',
+  //   fileName: 'Paulo César Baruk - Ele Continua Sendo Bom',
+  // },
+  // {
+  //   title: 'Trazendo a Arca - Tua Graça Me Basta',
+  //   fileName: 'Trazendo a Arca - Tua Graça Me Basta',
+  // },
+  // {
+  //   title: 'Bethel Church - Onde For, Eu Vou (Where Go i Go)',
+  //   fileName: 'Bethel Church - Onde For, Eu Vou (Where Go i Go)',
+  // },
+  // { title: 'Felipe Souza - Acende um fogo', fileName: 'Felipe Souza - Acende um fogo' },
+  // { title: 'Morada - Emaús', fileName: 'Morada - Emaús' },
+  // { title: 'Fernandinho - Único', fileName: 'Fernandinho - Único' },
   { title: 'Eli Soares - Aos Pes da Cruz', fileName: 'Eli Soares - Aos Pes da Cruz' },
   { title: 'Kleber Lucas - Deus Cuida de Mim', fileName: 'Kleber Lucas - Deus Cuida de Mim' },
+  {
+    title: 'Adhemar de Campos - Grande é o senhor',
+    fileName: 'Adhemar de Campos - Grande é o senhor',
+  },
 ];
 
 function App() {
