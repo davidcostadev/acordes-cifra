@@ -42,6 +42,7 @@ const SONGS = [
   // { title: 'Fernandinho - Único', fileName: 'Fernandinho - Único' },
   { title: 'Eli Soares - Aos Pes da Cruz', fileName: 'Eli Soares - Aos Pes da Cruz' },
   { title: 'Kleber Lucas - Deus Cuida de Mim', fileName: 'Kleber Lucas - Deus Cuida de Mim' },
+  { title: 'Adhemar de Campos - Ele É Exaltado', fileName: 'Adhemar de Campos - Ele É Exaltado' },
   {
     title: 'Adhemar de Campos - Grande é o senhor',
     fileName: 'Adhemar de Campos - Grande é o senhor',

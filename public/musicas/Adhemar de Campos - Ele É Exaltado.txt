@@ -1,0 +1,113 @@
+Eli Soares - Ele É Exaltado
+
+Tom: F
+[Intro] Db  Eb  Fm7  Eb
+        Db  Eb  Fm7  Eb
+        Db  Eb  Fm7  Db  Eb
+        F  F/A  Bb  Bb/D  C/E
+        F  F/A  Bb  Bb/D  C/E
+
+[Primeira Parte]
+
+F                   
+Ele é exaltado
+   F/A                Bb
+O rei é exaltado nos céus
+      Bb/D  C/E
+Eu o louva_rei
+F                    F/A             
+Ele é exaltado, pra sempre exaltado
+       Bb  C  Bb/D  C/E  D/F#
+O seu no__me lou___va___rei
+
+[Refrão]
+
+Gm  Gm/F    C/E  Dm  C   
+Ele é o Senhor
+        F        F/A       Bb  F/A
+Sua verdade vai sempre reinar
+ Gm  Gm/F  C/E  Dm  C   
+Ter_ra e  céus
+      F         F/Eb  D4  D/F#
+Glorificam seu santo no__me
+Gm7        Gm/F  
+Ele é exaltado
+   Eb        C        F   D  D7
+O rei é exaltado nos céus
+
+[Segunda Parte]
+
+G              
+Ele é exaltado
+   G/B                C9     
+O rei é exaltado nos céus
+      C/E  D/F#
+Eu o louvarei
+G               
+Ele é exaltado
+     G/B              
+Pra sempre exaltado
+       C  D  C/E  D/F#  E4  E7
+O seu no_me lou__va____rei
+
+[Refrão]
+
+Am7  Am7/G   D      
+Ele  é o Senhor
+        G        G/B       C  G/B
+Sua verdade vai sempre reinar
+ Am7  Am7/G  D/F#  C/E  D  
+Ter__ra e   céus
+      G         G/F   E4  E7
+Glorificam seu santo no__me
+Am7        Am/G 
+Ele é exaltado
+   F         D        G   E  E/G#
+O rei é exaltado nos céus
+
+Am7  Am7/G   D     
+Ele  é o Senhor
+        G        G/B       C  G/B
+Sua verdade vai sempre reinar
+ Am7  Am7/G  D/F#  C/E  D   
+Ter__ra e   céus
+      G         G/F   E4  E7
+Glorificam seu santo no__me
+
+[Final] 
+
+Am7        Am/G 
+Ele é exaltado
+   F         D        G   
+O rei é exaltado nos céus
+    E4  E/G#
+Aleluia
+Am7        Am/G  
+Ele é exaltado
+   F         D        G       E4  E/G#
+O rei é exaltado nos céus, Jesus
+Am7        Am/G  
+Ele é exaltado
+   F         D7(4/9)  Em7  D/F#  G
+O rei é exaltado nos céus
+
+[Acordes]
+A = X 0 2 2 2 0
+F = 1 3 3 2 1 1
+F/A = X 0 3 2 1 1
+Bb = X 1 3 3 3 1
+Bb/D = X 5 3 3 3 1
+C = X 3 2 0 1 0
+C/E = 0 2 2 0 1 0
+C9 = X 3 2 0 3 0
+D = X X 0 2 3 2
+D/F# = 2 0 0 2 3 2
+D7(4/9) = X 0 0 2 1 3
+D/E = 0 0 0 2 3 2
+D4 = 0 0 0 2 3 0
+D7 = X 0 0 2 1 2
+E = 0 2 2 1 0 0
+E/G# = 4 6 6 6 0 0
+E4 = 0 2 2 2 0 0
+E7 = 0 2 0 1 0 0
+E/G# = 4 2 2 1 0 0
