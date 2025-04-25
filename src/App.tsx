@@ -135,8 +135,6 @@ function App() {
     });
   };
 
-  console.log({ transpose });
-
   return (
     <div>
       <header className="bg-gray-100 border-b border-gray-200 px-2 py-2 flex items-center">

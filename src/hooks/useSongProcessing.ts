@@ -38,9 +38,6 @@ const transposeChord = (chord: string, semitones: number): string => {
   // D/E
   const match = chord.match(/^([A-G][#b]?)(.*)$/);
   if (!match) return chord;
-  // if (chord === 'D/E') {
-  //   console.log(chord, Chord.(chord));
-  // }
 
   const [, rootNote, modifiers] = match;
 
@@ -108,7 +105,6 @@ const detectKey = (lines: ProcessedLine[]): string => {
     matchCount: 0,
     scales: [] as string[],
   };
-  console.log(chordArray);
   const notesFromChords: string[] = [
     ...new Set(
       ...chordArray.flatMap((chord) => {
@@ -254,7 +250,6 @@ export const useSongProcessing = (
         const processed = lines.slice(1).map((line) => processLine(line));
         setProcessedContent(processed);
 
-        console.log({ processed });
         // Detect and set the original key
         const detectedKey = detectKey(processed)
           .replace('b', '#')

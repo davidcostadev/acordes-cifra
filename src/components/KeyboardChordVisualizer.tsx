@@ -40,7 +40,6 @@ const getBlackKeyOffset = (note: string): number => {
 
 export const KeyboardChordVisualizer = ({ chordName }: KeyboardChordVisualizerProps) => {
   const chordNotes = getChordNotes(chordName);
-  console.log(chordNotes);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-1 border border-gray-200">
