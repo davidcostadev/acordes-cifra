@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { KeyboardChordVisualizer } from './KeyboardChordVisualizer';
 import { useSongProcessing } from '../hooks/useSongProcessing';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
 interface SongContentProps {
   fileName: string;
@@ -52,6 +53,13 @@ export const SongContent = ({ fileName, transpose, columns, renderKey }: SongCon
     fileName,
     transpose
   );
+
+  const deps = { parts: processedContentTransposed[5]?.parts[0] };
+  useDeepCompareEffect(() => {
+    if (deps.parts) {
+      console.log(deps.parts);
+    }
+  }, [deps]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

@@ -1,19 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
 import * as Scale from '@tonaljs/scale';
 import { Chord } from '@tonaljs/tonal';
+import { ProcessedLine, processLine } from './utils';
 
 interface CustomChord {
   n: string;
   m: string;
   d: string | null;
   p: boolean | null;
-}
-
-interface ProcessedLine {
-  parts: {
-    type: 'text' | 'chord';
-    content: string;
-  }[];
 }
 
 interface UseSongProcessingResult {
@@ -167,59 +161,6 @@ export const useSongProcessing = (
     });
 
     return novosAcordes;
-  };
-
-  const processLine = (line: string): ProcessedLine => {
-    const notas = '[A-G]';
-    const acentuacoes = '(?:b|bb)';
-    const acordes = '*(?:#|##|sus|maj|min|aug|m|M|\\+|-|dim)';
-    const com = '*[\\d\\/]*';
-    const numeros = '*(?:[1-9])';
-    const foraMusica = '(?=\\s|$)(?! \\w)';
-    const padrao =
-      '(' +
-      '\\b(' +
-      notas +
-      acentuacoes +
-      numeros +
-      acordes +
-      com +
-      '(?:' +
-      notas +
-      acentuacoes +
-      acordes +
-      com +
-      ')*)' +
-      foraMusica +
-      ')';
-    const regex = new RegExp(padrao, 'g');
-
-    const parts: ProcessedLine['parts'] = [];
-    let lastIndex = 0;
-    let match;
-
-    while ((match = regex.exec(line)) !== null) {
-      if (match.index > lastIndex) {
-        parts.push({
-          type: 'text',
-          content: line.slice(lastIndex, match.index),
-        });
-      }
-      parts.push({
-        type: 'chord',
-        content: match[0],
-      });
-      lastIndex = match.index + match[0].length;
-    }
-
-    if (lastIndex < line.length) {
-      parts.push({
-        type: 'text',
-        content: line.slice(lastIndex),
-      });
-    }
-
-    return { parts };
   };
 
   useEffect(() => {

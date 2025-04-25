@@ -44,6 +44,7 @@ const SONGS = [
   { title: 'Kleber Lucas - Deus Cuida de Mim', fileName: 'Kleber Lucas - Deus Cuida de Mim' },
   { title: 'Adhemar de Campos - Ele É Exaltado', fileName: 'Adhemar de Campos - Ele É Exaltado' },
   { title: 'Eli Soares - Estrela da Manhã', fileName: 'Eli Soares - Estrela da Manhã' },
+  { title: 'Música de Test', fileName: 'Música de Test' },
   {
     title: 'Adhemar de Campos - Grande é o senhor',
     fileName: 'Adhemar de Campos - Grande é o senhor',
