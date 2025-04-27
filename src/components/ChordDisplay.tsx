@@ -37,7 +37,7 @@ class Acorde {
   }
 
   montarGrelha(contexto: CanvasRenderingContext2D) {
-=    // Set a background color to make sure we can see the canvas
+    // Set a background color to make sure we can see the canvas
     contexto.fillStyle = '#f0f0f0';
     contexto.fillRect(0, 0, 100, 130);
 
@@ -176,7 +176,6 @@ export const ChordDisplay = ({ chordName = 'C' }: ChordDisplayProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-
     const canvas = canvasRef.current;
     if (!canvas) {
       console.error('Canvas element not found');
@@ -194,7 +193,6 @@ export const ChordDisplay = ({ chordName = 'C' }: ChordDisplayProps) => {
 
     const biblioteca = new BibliotecaAcorde();
     const acordeInfo = biblioteca.getAcordePorCifra(chordName);
-
 
     if (acordeInfo) {
       const acorde = new Acorde(acordeInfo.n, acordeInfo.m, acordeInfo.d, acordeInfo.p);
