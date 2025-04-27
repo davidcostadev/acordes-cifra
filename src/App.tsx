@@ -23,6 +23,7 @@ const SONGS = [
   // },
   // { title: 'Morada - Jesus em tua presença', fileName: 'Morada - Jesus em tua presença' },
   { title: 'Mauro Henrique - Em Teus Braços', fileName: 'Mauro Henrique - Em Teus Braços' },
+  { title: 'Eli Soares - Eu te louvarei', fileName: 'Eli Soares - Eu te louvarei' },
   // { title: 'Fernandinho - Pai de Multidões', fileName: 'Fernandinho - Pai de Multidões' },
   // { title: 'Morada - Só Tu És Santo', fileName: 'Morada - Só Tu És Santo' },
   // {
