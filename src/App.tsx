@@ -24,6 +24,21 @@ const SONGS = [
   // { title: 'Morada - Jesus em tua presença', fileName: 'Morada - Jesus em tua presença' },
   { title: 'Mauro Henrique - Em Teus Braços', fileName: 'Mauro Henrique - Em Teus Braços' },
   { title: 'Eli Soares - Eu te louvarei', fileName: 'Eli Soares - Eu te louvarei' },
+  { title: 'Diante do Trono - A Ele a Glória', fileName: 'Diante do Trono - A Ele a Glória' },
+  { title: 'Corinhos Evangélicos - Ao Único', fileName: 'Corinhos Evangélicos - Ao Único' },
+  { title: 'Eli Soares - Maravilhoso És', fileName: 'Eli Soares - Maravilhoso És' },
+  { title: 'Eli Soares - Aonde Está Deus', fileName: 'Eli Soares - Aonde Está Deus' },
+  { title: 'Eli Soares - Amor de Pai', fileName: 'Eli Soares - Amor de Pai' },
+  { title: 'Eli Soares - Onipotente', fileName: 'Eli Soares - Onipotente' },
+  {
+    title: 'Amanda Rodrigues - Faz a Tua Paz Reinar',
+    fileName: 'Amanda Rodrigues - Faz a Tua Paz Reinar',
+  },
+  {
+    title: 'Heloísa Rosa - Quero Ser Como Criança',
+    fileName: 'Heloísa Rosa - Quero Ser Como Criança',
+  },
+
   // { title: 'Fernandinho - Pai de Multidões', fileName: 'Fernandinho - Pai de Multidões' },
   // { title: 'Morada - Só Tu És Santo', fileName: 'Morada - Só Tu És Santo' },
   // {
