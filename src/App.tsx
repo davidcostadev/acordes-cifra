@@ -30,6 +30,7 @@ const SONGS = [
   { title: 'Eli Soares - Aonde Está Deus', fileName: 'Eli Soares - Aonde Está Deus' },
   { title: 'Eli Soares - Amor de Pai', fileName: 'Eli Soares - Amor de Pai' },
   { title: 'Eli Soares - Onipotente', fileName: 'Eli Soares - Onipotente' },
+  { title: 'Leonardo Gonçalves - Eu Me Rendo', fileName: 'Leonardo Gonçalves - Eu Me Rendo' },
   {
     title: 'Amanda Rodrigues - Faz a Tua Paz Reinar',
     fileName: 'Amanda Rodrigues - Faz a Tua Paz Reinar',
