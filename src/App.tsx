@@ -10,6 +10,10 @@ const SONGS = [
 		title: "Nívea Soares - Teu Amor Não Falha",
 		fileName: "Nívea Soares - Teu Amor Não Falha",
 	},
+	{
+		title: "Corinhos - Não há deus Maior",
+		fileName: "Corinhos - Não há deus Maior",
+	},
 	// { title: 'Fernandinho - Pra Sempre', fileName: 'Fernandinho - Pra Sempre' },
 	// { title: 'Aline Barros - Diante da Cruz', fileName: 'Aline Barros - Diante da Cruz' },
 	// { title: 'Nívea Soares - Eu Vou Construir', fileName: 'Nívea Soares - Eu Vou Construir' },
